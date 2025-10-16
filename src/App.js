@@ -12,15 +12,15 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <nav>
+        {/* <nav>
           <Layout />
-        </nav>
+        </nav> */}
         <Routes>
           <Route path="*" element={<Navigate to="/" />} />
           {/* <Route path="/" element={<HomePage />}></Route> */}
           <Route path="/" element={<GenerateStruct />}></Route>
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </div>
   );
