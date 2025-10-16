@@ -39,6 +39,9 @@ export default function App() {
 
   const receiptRef = useRef(null);
 
+  // === NEW: consent state for enabling submit ===
+  const [agree, setAgree] = useState(false);
+
   // ==== Derived Totals ====
   const { subtotal, itemsCount, deliveryPayable, grandTotal } = useMemo(() => {
     const subtotal = products.reduce(
@@ -310,6 +313,24 @@ export default function App() {
               />
             </div>
 
+            {/* === NEW: Consent checkbox === */}
+            <div className="rounded-xl border bg-slate-50 p-4">
+              <label className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={agree}
+                  onChange={(e) => setAgree(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 accent-emerald-600"
+                />
+                <span className="text-xs leading-5 text-slate-700">
+                  Dengan mengklik ini Anda sepenuhnya bertanggung jawab terhadap
+                  diri Anda sendiri terhadap penggunaan e-struct generator ini,
+                  developer tidak bertanggung jawab apabila Anda menggunakannya
+                  untuk hal yang tidak baik.
+                </span>
+              </label>
+            </div>
+
             <div className="flex items-center justify-between border-t pt-4 mt-2">
               <div className="text-sm text-slate-600">
                 <div>
@@ -324,7 +345,14 @@ export default function App() {
 
               <button
                 onClick={downloadJPEG}
-                className="px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700"
+                disabled={!agree}
+                title={!agree ? "Centang persetujuan terlebih dahulu" : ""}
+                className={`px-4 py-2.5 rounded-xl text-white text-sm font-medium ${
+                  agree
+                    ? "bg-emerald-600 hover:bg-emerald-700"
+                    : "bg-emerald-400 cursor-not-allowed opacity-60"
+                }`}
+                aria-disabled={!agree}
               >
                 Download JPEG
               </button>
@@ -347,7 +375,9 @@ export default function App() {
           >
             {/* HEADER */}
             <div className="px-6 pt-6 pb-5 border-b">
-              <h3 className="text-[28px] leading-8 font-semibold">Item Details</h3>
+              <h3 className="text-[28px] leading-8 font-semibold">
+                Item Details
+              </h3>
             </div>
 
             {/* ITEMS */}
